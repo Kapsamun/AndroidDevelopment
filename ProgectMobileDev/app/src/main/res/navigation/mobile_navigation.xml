@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/nav_home">
+
+    <fragment
+        android:id="@+id/nav_home"
+        android:name="com.mirea.kapsamunelenanikolaevna.mireaproject.ui.HomeFragment"
+        android:label="@string/menu_home"
+        tools:layout="@layout/fragment_home" />
+
+    <fragment
+        android:id="@+id/nav_gallery"
+        android:name="com.mirea.kapsamunelenanikolaevna.mireaproject.ui.GalleryFragment"
+        android:label="@string/menu_gallery"
+        tools:layout="@layout/fragment_gallery" />
+
+    <fragment
+        android:id="@+id/nav_slideshow"
+        android:name="com.mirea.kapsamunelenanikolaevna.mireaproject.ui.SlideshowFragment"
+        android:label="@string/menu_slideshow"
+        tools:layout="@layout/fragment_slideshow" />
+
+    <fragment
+        android:id="@+id/nav_brouser"
+        android:name="com.mirea.kapsamunelenanikolaevna.mireaproject.WebViewFragment"
+        android:label="@string/menu_browser"
+        tools:layout="@layout/fragment_web_view" />
+    <fragment
+        android:id="@+id/nav_background_task"
+        android:name="com.mirea.kapsamunelenanikolaevna.mireaproject.BackgroundTaskFragment"
+        android:label="Фоновая задача"
+        tools:layout="@layout/fragment_background_task" />
+
+        <fragment
+            android:id="@+id/nav_hardware"
+            android:name="com.mirea.kapsamunelenanikolaevna.mireaproject.practice5.HardwareFragment"
+            android:label="Аппаратная часть"
+            tools:layout="@layout/fragment_hardware">
+
+            <action
+                android:id="@+id/action_hardwareFragment_to_sensorFragment"
+                app:destination="@id/nav_sensor" />
+
+            <action
+                android:id="@+id/action_hardwareFragment_to_cameraFragment"
+                app:destination="@id/nav_camera" />
+
+            <action
+                android:id="@+id/action_hardwareFragment_to_microphoneFragment"
+                app:destination="@id/nav_microphone" />
+        </fragment>
+
+        <fragment
+            android:id="@+id/nav_sensor"
+            android:name="com.mirea.kapsamunelenanikolaevna.mireaproject.practice5.SensorFragment"
+            android:label="Акселерометр"
+            tools:layout="@layout/fragment_sensor" />
+
+        <fragment
+            android:id="@+id/nav_camera"
+            android:name="com.mirea.kapsamunelenanikolaevna.mireaproject.practice5.CameraFragment"
+            android:label="Фото дня"
+            tools:layout="@layout/fragment_camera" />
+
+        <fragment
+            android:id="@+id/nav_microphone"
+            android:name="com.mirea.kapsamunelenanikolaevna.mireaproject.practice5.MicrophoneFragment"
+            android:label="Голосовые заметки"
+            tools:layout="@layout/fragment_microphone" />
+
+    <fragment
+        android:id="@+id/nav_profile"
+        android:name="com.mirea.kapsamunelenanikolaevna.mireaproject.practice6.ProfileFragment"
+        android:label="Профиль"
+        tools:layout="@layout/fragment_profile" />
+
+    <fragment
+        android:id="@+id/nav_file_work"
+        android:name="com.mirea.kapsamunelenanikolaevna.mireaproject.practice6.FileWorkFragment"
+        android:label="Работа с файлами"
+        tools:layout="@layout/fragment_file_work" />
+
+</navigation>

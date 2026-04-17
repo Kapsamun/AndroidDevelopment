@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Профиль пользователя"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:layout_marginBottom="24dp" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Имя пользователя"
+            style="@style/Widget.Material3.TextInputLayout.OutlinedBox">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etUserName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPersonName" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Возраст"
+            style="@style/Widget.Material3.TextInputLayout.OutlinedBox">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etAge"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="number" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Любимый жанр фильмов"
+            android:layout_marginTop="8dp" />
+
+        <RadioGroup
+            android:id="@+id/rgGenre"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <RadioButton
+                android:id="@+id/rbAction"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Боевик" />
+
+            <RadioButton
+                android:id="@+id/rbComedy"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Комедия" />
+
+            <RadioButton
+                android:id="@+id/rbDrama"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Драма" />
+
+            <RadioButton
+                android:id="@+id/rbSciFi"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Фантастика" />
+        </RadioGroup>
+
+        <CheckBox
+            android:id="@+id/cbNotifications"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Получать уведомления о новостях"
+            android:layout_marginTop="8dp" />
+
+        <Button
+            android:id="@+id/btnSaveProfile"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Сохранить профиль"
+            android:layout_marginTop="16dp" />
+
+        <Button
+            android:id="@+id/btnLoadProfile"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Загрузить профиль"
+            android:layout_marginTop="8dp"
+            style="@style/Widget.Material3.Button.OutlinedButton" />
+
+        <TextView
+            android:id="@+id/tvProfileInfo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:padding="12dp"
+            android:background="#f0f0f0"
+            android:text="Информация профиля будет здесь" />
+
+    </LinearLayout>
+</ScrollView>

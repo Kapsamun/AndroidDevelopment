@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:background="#E8EAF6">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Голосовые заметки"
+        android:textSize="28sp"
+        android:textStyle="bold"
+        android:textAlignment="center"
+        android:textColor="#3949AB"
+        android:layout_marginBottom="8dp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Записывайте свои идеи голосом"
+        android:textAlignment="center"
+        android:textColor="#5C6BC0"
+        android:layout_marginBottom="24dp" />
+
+    <TextView
+        android:id="@+id/tvStatus"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Проверка разрешений..."
+        android:gravity="center"
+        android:padding="12dp"
+        android:background="#C5CAE9"
+        android:layout_marginBottom="16dp" />
+
+    <Button
+        android:id="@+id/btnStartRecording"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="12dp"
+        android:backgroundTint="#673AB7"
+        android:text="Начать запись"
+        android:textSize="18sp" />
+
+    <Button
+        android:id="@+id/btnPlayRecording"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="24dp"
+        android:backgroundTint="#673AB7"
+        android:text="Информация о заметке"
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/tvAdvice"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Нажмите 'Начать запись' и скажите что-нибудь"
+        android:textSize="14sp"
+        android:background="#FFF3E0"
+        android:padding="16dp"
+        android:lineSpacingExtra="4dp" />
+
+</LinearLayout>
