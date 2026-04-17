@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:padding="16dp">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Любимый актёр / актриса"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:layout_marginBottom="24dp" />
+
+    <ImageView
+        android:id="@+id/ivActorPhoto"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:src="@drawable/ic_placeholder"
+        android:scaleType="centerCrop"
+        android:layout_marginBottom="24dp" />
+
+    <EditText
+        android:id="@+id/etActorName"
+        android:layout_width="411dp"
+        android:layout_height="70dp"
+        android:layout_marginBottom="16dp"
+        android:hint="Введите имя актёра / актрисы" />
+
+    <Button
+        android:id="@+id/btnSave"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Сохранить" />
+
+    <Button
+        android:id="@+id/btnLoad"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Загрузить"
+        android:layout_marginTop="8dp" />
+
+    <TextView
+        android:id="@+id/tvActorName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:background="@color/white"
+        android:gravity="center"
+        android:padding="12dp"
+        android:text="Здесь отобразится имя актёра"
+        android:textSize="18sp" />
+
+</LinearLayout>
