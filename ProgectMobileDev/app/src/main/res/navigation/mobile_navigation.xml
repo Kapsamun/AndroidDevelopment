@@ -82,5 +82,10 @@
         android:name="com.mirea.kapsamunelenanikolaevna.mireaproject.practice6.FileWorkFragment"
         android:label="Работа с файлами"
         tools:layout="@layout/fragment_file_work" />
+    <fragment
+        android:id="@+id/nav_time_service"
+        android:name="com.mirea.kapsamunelenanikolaevna.mireaproject.practice7.TimeServiceFragment"
+        android:label="Точное время"
+        tools:layout="@layout/fragment_time_service" />
 
 </navigation>

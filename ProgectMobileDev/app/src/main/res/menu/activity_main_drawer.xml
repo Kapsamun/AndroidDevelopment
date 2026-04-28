@@ -38,6 +38,10 @@
             android:id="@+id/nav_file_work"
             android:icon="@android:drawable/ic_menu_save"
             android:title="Работа с файлами" />
+        <item
+            android:id="@+id/nav_time_service"
+            android:icon="@android:drawable/ic_menu_recent_history"
+            android:title="Точное время" />
 
     </group>
 </menu>
