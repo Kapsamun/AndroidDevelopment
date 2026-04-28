@@ -47,7 +47,6 @@ public class MainActivity extends AppCompatActivity implements
     private static final int REQUEST_CODE_PERMISSION = 100;
     private boolean isRouteBuilt = false;
 
-    // Координаты маршрута (старт и финиш)
     private final Point ROUTE_START_LOCATION = new Point(55.703742, 37.529178);
     private final Point ROUTE_END_LOCATION = new Point(55.758000, 37.616000);
 
@@ -65,25 +64,19 @@ public class MainActivity extends AppCompatActivity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // Инициализация библиотек (API ключ уже установлен в классе App)
         MapKitFactory.initialize(this);
         DirectionsFactory.initialize(this);
 
-        // Инфлейтим разметку
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        // Получаем карту
         mapView = binding.mapview;
 
-        // Отключаем жесты поворота (опционально)
         mapView.getMap().setRotateGesturesEnabled(false);
 
         // Инициализируем объекты для маршрута
         drivingRouter = DirectionsFactory.getInstance().createDrivingRouter();
         mapObjects = mapView.getMap().getMapObjects().addCollection();
-
-        // *** УБИРАЕМ ЛЮБЫЕ move КАМЕРЫ ЗДЕСЬ! ***
 
         // Добавляем маркер на конечную точку
         addPlacemark();
@@ -135,10 +128,8 @@ public class MainActivity extends AppCompatActivity implements
         buildRoute();
     }
 
-    // ==================== UserLocationObjectListener ====================
     @Override
     public void onObjectAdded(@NonNull UserLocationView userLocationView) {
-        // Здесь можно настроить внешний вид иконки (стрелка, круг)
         userLocationView.getAccuracyCircle().setFillColor(Color.BLUE & 0x99ffffff);
     }
 
@@ -147,13 +138,13 @@ public class MainActivity extends AppCompatActivity implements
     @Override
     public void onObjectUpdated(@NonNull UserLocationView userLocationView, @NonNull ObjectEvent objectEvent) { }
 
-    // ==================== ПОСТРОЕНИЕ МАРШРУТА ====================
+    //  ПОСТРОЕНИЕ МАРШРУТА
     private void buildRoute() {
         if (isRouteBuilt) return;
 
         DrivingOptions drivingOptions = new DrivingOptions();
         drivingOptions.setRoutesCount(3);
-        VehicleOptions vehicleOptions = new VehicleOptions();
+        VehicleOptions vehicleOptions = new VehicleOptions(); //авто
 
         ArrayList<RequestPoint> points = new ArrayList<>();
         points.add(new RequestPoint(ROUTE_START_LOCATION, RequestPointType.WAYPOINT, null, null));
@@ -173,7 +164,7 @@ public class MainActivity extends AppCompatActivity implements
             mapObjects.addPolyline(route.getGeometry()).setStrokeColor(colors[i % colors.length]);
         }
 
-        // Просто центрируем карту на середине между стартом и финишем
+        // центрируем карту на середине между стартом и финишем
         Point center = new Point(
                 (ROUTE_START_LOCATION.getLatitude() + ROUTE_END_LOCATION.getLatitude()) / 2,
                 (ROUTE_START_LOCATION.getLongitude() + ROUTE_END_LOCATION.getLongitude()) / 2
@@ -196,7 +187,6 @@ public class MainActivity extends AppCompatActivity implements
         Toast.makeText(this, message, Toast.LENGTH_LONG).show();
     }
 
-    // ==================== ЖИЗНЕННЫЙ ЦИКЛ ====================
     @Override
     protected void onStart() {
         super.onStart();

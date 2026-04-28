@@ -26,3 +26,4 @@ rootProject.name = "AndroidAppDev8"
 include(":app")
 include(":yandexmaps")
 include(":yandexdriver")
+include(":osmmaps")
