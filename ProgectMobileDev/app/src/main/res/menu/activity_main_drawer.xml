@@ -42,6 +42,10 @@
             android:id="@+id/nav_time_service"
             android:icon="@android:drawable/ic_menu_recent_history"
             android:title="Точное время" />
+        <item
+            android:id="@+id/nav_places"
+            android:icon="@android:drawable/ic_menu_mapmode"
+            android:title="Заведения" />
 
     </group>
 </menu>
