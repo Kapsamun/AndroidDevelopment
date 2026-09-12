@@ -1,4 +1,4 @@
-package com.mirea.kapsamunelenanikolaevna.movieproject.Storage.models;
+package com.mirea.kapsamunelenanikolaevna.movieproject.data.storage.models;
 
 public class Movie {
     private final int id;
@@ -22,4 +22,5 @@ public class Movie {
     public String getLocalDate() {
         return localDate;
     }
+
 }

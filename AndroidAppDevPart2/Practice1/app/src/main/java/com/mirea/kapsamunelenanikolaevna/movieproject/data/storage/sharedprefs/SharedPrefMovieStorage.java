@@ -1,13 +1,15 @@
-package com.mirea.kapsamunelenanikolaevna.movieproject.Storage.sharedprefs;
+package com.mirea.kapsamunelenanikolaevna.movieproject.data.storage.sharedprefs;
 
 import android.content.Context;
 import android.content.SharedPreferences;
 
-import com.mirea.kapsamunelenanikolaevna.movieproject.Storage.models.Movie;
+import com.mirea.kapsamunelenanikolaevna.movieproject.data.storage.MovieStorage;
+import com.mirea.kapsamunelenanikolaevna.movieproject.data.storage.models.Movie;
 
 import java.time.LocalDate;
 
-public class SharedPrefMovieStorage {
+public class SharedPrefMovieStorage implements MovieStorage {
+
     private static final String PREFS_NAME = "movie_prefs";
     private static final String KEY_NAME = "movie_name";
     private static final String KEY_ID = "movie_id";
@@ -42,5 +44,4 @@ public class SharedPrefMovieStorage {
                 .putString(KEY_DATE, LocalDate.now().toString())
                 .commit();
     }
-}
 }
