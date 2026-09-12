@@ -24,3 +24,5 @@ dependencyResolutionManagement {
 
 rootProject.name = "CelebrityBase"
 include(":app")
+include(":domain")
+include(":data")
