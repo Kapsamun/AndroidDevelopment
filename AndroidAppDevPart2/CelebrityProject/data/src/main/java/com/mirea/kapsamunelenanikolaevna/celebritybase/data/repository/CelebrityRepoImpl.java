@@ -22,15 +22,13 @@ public class CelebrityRepoImpl implements CelebrityRepository {
 
     private final NetworkApi networkApi;
     private final CelebrityDao celebrityDao;
-    private final ClientStorage clientStorage;
 
     public CelebrityRepoImpl(Context context) {
         this.networkApi = new MockNetworkApi();
         this.celebrityDao = AppDatabase.getInstance(context).celebrityDao();
-        this.clientStorage = new SharedPrefClientStorage(context);
     }
 
-    // ========== NetworkApi ==========
+    // NetworkApi
     @Override
     public List<Celebrity> getCelebrities() {
         List<CelebrityDto> dtoList = networkApi.getCelebrities();
@@ -49,7 +47,7 @@ public class CelebrityRepoImpl implements CelebrityRepository {
         return dto != null ? mapToDomain(dto) : null;
     }
 
-    // ========== Room (избранное) ==========
+    //Room (избранное)
     @Override
     public boolean addToFavorites(Celebrity celebrity) {
         if (celebrity == null) return false;
@@ -78,36 +76,13 @@ public class CelebrityRepoImpl implements CelebrityRepository {
         return result;
     }
 
-    // ========== Заглушка для распознавания ==========
+    // Заглушка для распознавания
     @Override
     public String recognizeCelebrityByPhoto(String imagePath) {
         return "Распознавание пока не реализовано";
     }
 
-    // ========== SharedPreferences (клиент) ==========
-    public void saveClientInfo(String email, String name, boolean isGuest) {
-        clientStorage.saveClientEmail(email);
-        clientStorage.saveClientName(name);
-        clientStorage.setGuest(isGuest);
-    }
-
-    public String getClientEmail() {
-        return clientStorage.getClientEmail();
-    }
-
-    public String getClientName() {
-        return clientStorage.getClientName();
-    }
-
-    public boolean isGuest() {
-        return clientStorage.isGuest();
-    }
-
-    public void clearClientInfo() {
-        clientStorage.clear();
-    }
-
-    // ========== Мапперы ==========
+    // Мапперы
     private Celebrity mapToDomain(CelebrityDto dto) {
         return new Celebrity(dto.id, dto.name, dto.photoUrl, dto.biography);
     }

@@ -12,9 +12,10 @@ import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.mirea.kapsamunelenanikolaevna.celebritybase.R;
 import com.mirea.kapsamunelenanikolaevna.celebritybase.data.repository.AuthRepositoryImpl;
-import com.mirea.kapsamunelenanikolaevna.celebritybase.data.repository.CelebrityRepoImpl;
+import com.mirea.kapsamunelenanikolaevna.celebritybase.data.repository.storage.ClientRepositoryImpl;
 import com.mirea.kapsamunelenanikolaevna.celebritybase.domain.models.User;
 import com.mirea.kapsamunelenanikolaevna.celebritybase.domain.repo.AuthRepository;
+import com.mirea.kapsamunelenanikolaevna.celebritybase.domain.repo.ClientRepository;
 import com.mirea.kapsamunelenanikolaevna.celebritybase.domain.usecase.auth.LoginUseCase;
 import com.mirea.kapsamunelenanikolaevna.celebritybase.domain.usecase.auth.RegisterUseCase;
 
@@ -44,7 +45,6 @@ public class AuthActivity extends AppCompatActivity {
         loginUseCase = new LoginUseCase(authRepository);
         registerUseCase = new RegisterUseCase(authRepository);
 
-        // Уже авторизован?
         if (authRepository.getCurrentUser() != null) {
             openMain();
             return;
@@ -69,6 +69,12 @@ public class AuthActivity extends AppCompatActivity {
             @Override
             public void onSuccess(User user) {
                 runOnUiThread(() -> {
+                    // Сохраняем данные клиента
+                    ClientRepository clientRepo = new ClientRepositoryImpl(AuthActivity.this);
+                    String email = user.getEmail() != null ? user.getEmail() : "";
+                    String name = email.contains("@") ? email.split("@")[0] : email;
+                    clientRepo.saveClientInfo(email, name, false);
+
                     setLoading(false);
                     Toast.makeText(AuthActivity.this, "Добро пожаловать!", Toast.LENGTH_SHORT).show();
                     openMain();
@@ -105,13 +111,16 @@ public class AuthActivity extends AppCompatActivity {
             @Override
             public void onSuccess(User user) {
                 runOnUiThread(() -> {
+                    // Сохраняем данные клиента
+                    ClientRepository clientRepo = new ClientRepositoryImpl(AuthActivity.this);
+                    String email = user.getEmail() != null ? user.getEmail() : "";
+                    String name = email.contains("@") ? email.split("@")[0] : email;
+                    clientRepo.saveClientInfo(email, name, false);
+
                     setLoading(false);
-                    Toast.makeText(AuthActivity.this, "Аккаунт создан!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(AuthActivity.this, "Добро пожаловать!", Toast.LENGTH_SHORT).show();
                     openMain();
                 });
-                // внутри onSuccess:
-                CelebrityRepoImpl repo = new CelebrityRepoImpl(AuthActivity.this);
-                repo.saveClientInfo(user.getEmail(), user.getEmail().split("@")[0], false);
             }
 
             @Override

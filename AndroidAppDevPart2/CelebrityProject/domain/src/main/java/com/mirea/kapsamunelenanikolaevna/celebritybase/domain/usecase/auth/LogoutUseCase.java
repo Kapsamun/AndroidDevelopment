@@ -9,7 +9,7 @@ public class LogoutUseCase {
         this.authRepository = authRepository;
     }
 
-    public void execute(String email, String password, AuthRepository.AuthCallback callback) {
-        authRepository.register(email, password, callback);
+    public void execute() {
+        authRepository.logout();
     }
 }

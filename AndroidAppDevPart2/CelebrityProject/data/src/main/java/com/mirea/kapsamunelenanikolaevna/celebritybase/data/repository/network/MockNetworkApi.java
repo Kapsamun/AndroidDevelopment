@@ -33,7 +33,6 @@ public class MockNetworkApi implements NetworkApi {
 
     @Override
     public List<CelebrityDto> getCelebrities() {
-        // Имитация задержки сети (по желанию можно убрать)
         try {
             Thread.sleep(300);
         } catch (InterruptedException ignored) {}

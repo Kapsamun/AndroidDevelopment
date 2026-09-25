@@ -21,7 +21,7 @@ public abstract class AppDatabase extends RoomDatabase {
                                     context.getApplicationContext(),
                                     AppDatabase.class,
                                     "celebrity_db"
-                            ).allowMainThreadQueries() // для учебного проекта допустимо
+                            ).allowMainThreadQueries()
                             .build();
                 }
             }

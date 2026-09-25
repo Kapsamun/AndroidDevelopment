@@ -5,6 +5,8 @@ import com.mirea.kapsamunelenanikolaevna.movieproject.domain.repo.MovieRepositor
 
 public class SaveFilmToFavoriteUseCase {
     private MovieRepository movieRepository;
+    private Movie movie;
+
     public SaveFilmToFavoriteUseCase(MovieRepository movieRepository) {
         this.movieRepository = movieRepository;
     }
