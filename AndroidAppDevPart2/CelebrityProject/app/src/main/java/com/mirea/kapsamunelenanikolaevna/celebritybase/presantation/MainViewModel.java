@@ -27,6 +27,9 @@ public class MainViewModel extends ViewModel {
     private final CelebrityDao celebrityDao;
     private final NetworkApi networkApi;
 
+    // LiveData для списка знаменитостей
+    private final MutableLiveData<List<Celebrity>> celebritiesLiveData = new MutableLiveData<>();
+
     // 1. LiveData для обновления статуса Use Cases
     private final MutableLiveData<String> celebrityResultLiveData = new MutableLiveData<>();
 
@@ -41,6 +44,7 @@ public class MainViewModel extends ViewModel {
 
         // Запускаем сборку данных в MediatorLiveData
         loadCombinedData();
+        loadCelebrities(); // сразу загружаем список для RecyclerView
     }
 
     public LiveData<String> getCelebrityResult() {
@@ -50,6 +54,8 @@ public class MainViewModel extends ViewModel {
     public LiveData<String> getMediatorCelebrityData() {
         return mediatorCelebrityData;
     }
+
+    public LiveData<List<Celebrity>> getCelebrities() {return celebritiesLiveData;}
 
     // Сохранение через UseCase (с 4 аргументами вашей доменной модели)
     public void saveCelebrity(String name) {
@@ -89,6 +95,7 @@ public class MainViewModel extends ViewModel {
 
     // Реализация требования №3: MediatorLiveData объединяет Room (БД) и MockNetworkApi (Сеть)
     public void loadCombinedData() {
+
         // Источник 1: Замоканная БД Room
         MutableLiveData<String> dbSource = new MutableLiveData<>();
         new Handler(Looper.getMainLooper()).postDelayed(() -> {
@@ -123,6 +130,22 @@ public class MainViewModel extends ViewModel {
         mediatorCelebrityData.addSource(netSource, data -> {
             mediatorCelebrityData.setValue("Получено из источника -> " + data);
         });
+    }
+
+    /**
+     * Загружает список знаменитостей из репозитория
+     * (Retrofit → если недоступен, то заглушка MockNetworkApi)
+     * и передаёт в LiveData для RecyclerView.
+     */
+    public void loadCelebrities() {
+        new Thread(() -> {
+            try {
+                List<Celebrity> list = celebrityRepository.getCelebrities();
+                celebritiesLiveData.postValue(list);
+            } catch (Exception e) {
+                celebritiesLiveData.postValue(new java.util.ArrayList<>());
+            }
+        }).start();
     }
 
     @Override

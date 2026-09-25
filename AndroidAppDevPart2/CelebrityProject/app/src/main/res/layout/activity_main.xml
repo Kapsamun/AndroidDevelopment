@@ -1,85 +1,88 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fillViewport="true">
+    android:orientation="vertical"
+    android:padding="12dp"
+    tools:context=".presantation.MainActivity">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Знаменитости"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:layout_marginBottom="8dp" />
+
+    <!-- RecyclerView — основной список -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerViewCelebrities"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:clipToPadding="false" />
+
+    <!-- Старый блок (можно оставить для сохранения избранного) -->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#DDDDDD"
+        android:layout_marginVertical="8dp" />
+
+    <TextView
+        android:id="@+id/textViewCelebrity"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:minLines="1"
+        android:text="Избранное не загружено"
+        android:textSize="14sp" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
-        android:orientation="vertical"
-        android:padding="20dp">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Работа со слоем Domain (MVVM)"
-            android:textSize="20sp"
-            android:textStyle="bold" />
-
-        <TextView
-            android:id="@+id/textViewCelebrity"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:gravity="center"
-            android:minLines="2"
-            android:text="Данные не загружены"
-            android:textSize="16sp" />
-
-        <Button
-            android:id="@+id/buttonGetCelebrity"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:text="Отобразить сохраненных" />
+        android:orientation="horizontal"
+        android:layout_marginTop="6dp">
 
         <EditText
             android:id="@+id/editTextCelebrity"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:hint="Имя знаменитости" />
+            android:layout_width="314dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:hint="Имя знаменитости"
+            android:inputType="textPersonName" />
 
         <Button
             android:id="@+id/buttonSaveCelebrity"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:text="Сохранить в БД (Use Case)" />
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="2dp"
-            android:layout_marginVertical="24dp"
-            android:background="#DDDDDD" />
-
-        <!-- БЛОК КОНТРОЛЬНОГО ЗАДАНИЯ: MediatorLiveData -->
-        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Контрольное задание: MediatorLiveData"
-            android:textSize="18sp"
-            android:textStyle="bold" />
-
-        <TextView
-            android:id="@+id/textViewMediator"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            android:background="#EFEFEF"
-            android:padding="12dp"
-            android:text="Ожидание загрузки объединенных данных..."
-            android:textColor="#0D47A1"
-            android:textSize="15sp" />
-
-        <Button
-            android:id="@+id/buttonFetchCombined"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            android:text="Объединить данные (Сеть + БД)" />
-
+            android:text="Сохранить" />
     </LinearLayout>
-</ScrollView>
+
+    <Button
+        android:id="@+id/buttonGetCelebrity"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Показать избранных" />
+
+    <TextView
+        android:id="@+id/textViewMediator"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:background="#EFEFEF"
+        android:padding="8dp"
+        android:text="MediatorLiveData..."
+        android:textSize="13sp"
+        android:textColor="#0D47A1" />
+
+    <Button
+        android:id="@+id/buttonFetchCombined"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Объединить (Сеть + БД)" />
+
+</LinearLayout>
