@@ -4,10 +4,13 @@ import android.os.Bundle;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.mirea.kapsamunelenanikolaevna.celebritybase.R;
 import com.mirea.kapsamunelenanikolaevna.celebritybase.data.repository.CelebrityRepoImpl;
@@ -19,67 +22,42 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
+    private MainViewModel viewModel;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        ClientRepository clientRepo = new ClientRepositoryImpl(this);
-        String email = clientRepo.getClientEmail();
-        String name = clientRepo.getClientName();
-        boolean isGuest = clientRepo.isGuest();
+        // Инициализация ViewModel через собственную фабрику
+        viewModel = new ViewModelProvider(this, new ViewModelFactory(this)).get(MainViewModel.class);
 
-        CelebrityRepoImpl repo = new CelebrityRepoImpl(this);
+        TextView textViewCelebrity = findViewById(R.id.textViewCelebrity);
+        EditText editTextCelebrity = findViewById(R.id.editTextCelebrity);
+        Button buttonGet = findViewById(R.id.buttonGetCelebrity);
+        Button buttonSave = findViewById(R.id.buttonSaveCelebrity);
 
-        // NetworkApi
-        List<Celebrity> celebrities = repo.getCelebrities();
-        StringBuilder networkInfo = new StringBuilder("2. NetworkApi\nНайдено: " + celebrities.size() + "\n");
-        for (Celebrity c : celebrities) {
-            networkInfo.append("• ").append(c.getName()).append("\n");
-        }
+        TextView textViewMediator = findViewById(R.id.textViewMediator);
+        Button buttonFetchCombined = findViewById(R.id.buttonFetchCombined);
 
-        findViewById(android.R.id.content).postDelayed(() ->
-                showBigToast(networkInfo.toString()), 3000);
+        // Подписка на LiveData выполнения Use Cases
+        viewModel.getCelebrityResult().observe(this, textViewCelebrity::setText);
 
-        // Room
-        findViewById(android.R.id.content).postDelayed(() -> {
-            if (!celebrities.isEmpty()) {
-                Celebrity first = celebrities.get(0);
-                repo.addToFavorites(first);
-                List<Celebrity> favorites = repo.getFavorites();
+        // Подписка на MediatorLiveData (Контрольное задание: объединение БД + Сеть)
+        viewModel.getMediatorCelebrityData().observe(this, textViewMediator::setText);
 
-                showBigToast(
-                        "3. Room\n" +
-                                "Добавлен: " + first.getName() + "\n" +
-                                "В избранном: " + favorites.size()
-                );
-            } else {
-                showBigToast("3. Room\nСписок пуст");
-            }
-        }, 6000);
+        // Обработка кликов
+        buttonSave.setOnClickListener(v -> {
+            String name = editTextCelebrity.getText().toString().trim();
+            viewModel.saveCelebrity(name);
+        });
 
-        // Поиск
-        findViewById(android.R.id.content).postDelayed(() -> {
-            List<Celebrity> found = repo.searchCelebrities("Зен");
-            StringBuilder searchInfo = new StringBuilder("4. Поиск «Зен»\nНайдено: " + found.size() + "\n");
-            for (Celebrity c : found) {
-                searchInfo.append("• ").append(c.getName()).append("\n");
-            }
-            showBigToast(searchInfo.toString());
-        }, 9000);
-    }
+        buttonGet.setOnClickListener(v -> {
+            viewModel.loadCelebrity();
+        });
 
-    private void showBigToast(String message) {
-        LayoutInflater inflater = getLayoutInflater();
-        View layout = inflater.inflate(R.layout.toast_custom, null);
-
-        TextView tv = layout.findViewById(R.id.tvToast);
-        tv.setText(message);
-
-        Toast toast = new Toast(getApplicationContext());
-        toast.setDuration(Toast.LENGTH_LONG);
-        toast.setView(layout);
-        toast.setGravity(Gravity.CENTER, 0, 0);
-        toast.show();
+        buttonFetchCombined.setOnClickListener(v -> {
+            viewModel.loadCombinedData();
+        });
     }
 }

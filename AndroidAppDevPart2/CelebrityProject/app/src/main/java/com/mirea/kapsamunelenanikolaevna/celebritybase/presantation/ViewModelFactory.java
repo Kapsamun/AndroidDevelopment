@@ -1,0 +1,41 @@
+package com.mirea.kapsamunelenanikolaevna.celebritybase.presantation;
+
+import android.content.Context;
+
+import androidx.annotation.NonNull;
+import androidx.lifecycle.ViewModel;
+import androidx.lifecycle.ViewModelProvider;
+
+import com.mirea.kapsamunelenanikolaevna.celebritybase.data.repository.CelebrityRepoImpl;
+import com.mirea.kapsamunelenanikolaevna.celebritybase.data.repository.network.MockNetworkApi;
+import com.mirea.kapsamunelenanikolaevna.celebritybase.data.repository.network.NetworkApi;
+import com.mirea.kapsamunelenanikolaevna.celebritybase.data.repository.storage.room.AppDatabase;
+import com.mirea.kapsamunelenanikolaevna.celebritybase.data.repository.storage.room.CelebrityDao;
+import com.mirea.kapsamunelenanikolaevna.celebritybase.domain.repo.CelebrityRepository;
+
+public class ViewModelFactory implements ViewModelProvider.Factory {
+
+    private final Context context;
+
+    public ViewModelFactory(Context context) {
+        this.context = context.getApplicationContext();
+    }
+
+    @NonNull
+    @Override
+    @SuppressWarnings("unchecked")
+    public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
+        // 1. Создаем репозиторий слоя domain через реализацию из data, принимающую context
+        CelebrityRepository celebrityRepository = new CelebrityRepoImpl(context);
+
+        // 2. Получаем DAO базы данных Room через AppDatabase.getInstance()
+        AppDatabase db = AppDatabase.getInstance(context);
+        CelebrityDao celebrityDao = db.celebrityDao();
+
+        // 3. Получаем сетевое Mock API
+        NetworkApi networkApi = new MockNetworkApi();
+
+        // 4. Передаем зависимости в MainViewModel для выполнения контрольного задания
+        return (T) new MainViewModel(celebrityRepository, celebrityDao, networkApi);
+    }
+}
