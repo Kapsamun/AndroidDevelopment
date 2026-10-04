@@ -11,18 +11,23 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.mirea.kapsamunelenanikolaevna.celebritybase.R;
 import com.mirea.kapsamunelenanikolaevna.celebritybase.data.repository.CelebrityRepoImpl;
 import com.mirea.kapsamunelenanikolaevna.celebritybase.data.repository.storage.ClientRepositoryImpl;
 import com.mirea.kapsamunelenanikolaevna.celebritybase.domain.models.Celebrity;
 import com.mirea.kapsamunelenanikolaevna.celebritybase.domain.repo.ClientRepository;
+import com.mirea.kapsamunelenanikolaevna.celebritybase.presantation.practice4.CelebrityAdapter;
 
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
     private MainViewModel viewModel;
+
+    private CelebrityAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,24 +37,38 @@ public class MainActivity extends AppCompatActivity {
         // Инициализация ViewModel через собственную фабрику
         viewModel = new ViewModelProvider(this, new ViewModelFactory(this)).get(MainViewModel.class);
 
-        TextView textViewCelebrity = findViewById(R.id.textViewCelebrity);
+        // Инициализация RecyclerView
+        RecyclerView recyclerView = findViewById(R.id.recyclerViewCelebrities);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        adapter = new CelebrityAdapter();
+        recyclerView.setAdapter(adapter);
+
         EditText editTextCelebrity = findViewById(R.id.editTextCelebrity);
         Button buttonGet = findViewById(R.id.buttonGetCelebrity);
         Button buttonSave = findViewById(R.id.buttonSaveCelebrity);
-
-        TextView textViewMediator = findViewById(R.id.textViewMediator);
         Button buttonFetchCombined = findViewById(R.id.buttonFetchCombined);
 
-        // Подписка на LiveData выполнения Use Cases
-        viewModel.getCelebrityResult().observe(this, textViewCelebrity::setText);
 
-        // Подписка на MediatorLiveData (Контрольное задание: объединение БД + Сеть)
-        viewModel.getMediatorCelebrityData().observe(this, textViewMediator::setText);
 
-        // Обработка кликов
+        viewModel.getMediatorCelebrityData().observe(this, list -> {
+            if (list != null && !list.isEmpty()) {
+                adapter.setCelebrities(list);
+                Toast.makeText(MainActivity.this,
+                        "Объединенный список отображен! Элементов: " + list.size(),
+                        Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        viewModel.getCelebritiesLiveData().observe(this, list -> {
+            adapter.setCelebrities(list);
+        });
+
         buttonSave.setOnClickListener(v -> {
             String name = editTextCelebrity.getText().toString().trim();
-            viewModel.saveCelebrity(name);
+            if (!name.isEmpty()) {
+                viewModel.saveCelebrity(name);
+                editTextCelebrity.setText(""); // очищаем поле ввода
+            }
         });
 
         buttonGet.setOnClickListener(v -> {
@@ -58,6 +77,12 @@ public class MainActivity extends AppCompatActivity {
 
         buttonFetchCombined.setOnClickListener(v -> {
             viewModel.loadCombinedData();
+        });
+
+        viewModel.getCelebrityResult().observe(this, message -> {
+            if (message != null && !message.isEmpty()) {
+                Toast.makeText(MainActivity.this, message, Toast.LENGTH_SHORT).show();
+            }
         });
     }
 }

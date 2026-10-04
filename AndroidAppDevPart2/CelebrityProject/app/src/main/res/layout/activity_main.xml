@@ -2,7 +2,8 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fillViewport="true">
+    android:fillViewport="true"
+    android:descendantFocusability="beforeDescendants">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -18,22 +19,20 @@
             android:textSize="20sp"
             android:textStyle="bold" />
 
-        <TextView
-            android:id="@+id/textViewCelebrity"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:gravity="center"
-            android:minLines="2"
-            android:text="Данные не загружены"
-            android:textSize="16sp" />
-
         <Button
             android:id="@+id/buttonGetCelebrity"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:text="Отобразить сохраненных" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerViewCelebrities"
+            android:layout_width="match_parent"
+            android:layout_height="220dp"
+            android:layout_marginTop="12dp"
+            android:nestedScrollingEnabled="false"
+            android:overScrollMode="never" />
 
         <EditText
             android:id="@+id/editTextCelebrity"
@@ -52,27 +51,15 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="2dp"
-            android:layout_marginVertical="24dp"
+            android:layout_marginVertical="20dp"
             android:background="#DDDDDD" />
 
-        <!-- БЛОК КОНТРОЛЬНОГО ЗАДАНИЯ: MediatorLiveData -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Контрольное задание: MediatorLiveData"
             android:textSize="18sp"
             android:textStyle="bold" />
-
-        <TextView
-            android:id="@+id/textViewMediator"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            android:background="#EFEFEF"
-            android:padding="12dp"
-            android:text="Ожидание загрузки объединенных данных..."
-            android:textColor="#0D47A1"
-            android:textSize="15sp" />
 
         <Button
             android:id="@+id/buttonFetchCombined"

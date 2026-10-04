@@ -25,17 +25,13 @@ public class ViewModelFactory implements ViewModelProvider.Factory {
     @Override
     @SuppressWarnings("unchecked")
     public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
-        // 1. Создаем репозиторий слоя domain через реализацию из data, принимающую context
         CelebrityRepository celebrityRepository = new CelebrityRepoImpl(context);
 
-        // 2. Получаем DAO базы данных Room через AppDatabase.getInstance()
+        //Получаем DAO базы данных Room через AppDatabase.getInstance()
         AppDatabase db = AppDatabase.getInstance(context);
+
         CelebrityDao celebrityDao = db.celebrityDao();
-
-        // 3. Получаем сетевое Mock API
         NetworkApi networkApi = new MockNetworkApi();
-
-        // 4. Передаем зависимости в MainViewModel для выполнения контрольного задания
         return (T) new MainViewModel(celebrityRepository, celebrityDao, networkApi);
     }
 }

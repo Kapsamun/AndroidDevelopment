@@ -17,8 +17,8 @@ import com.mirea.kapsamunelenanikolaevna.celebritybase.domain.models.Celebrity;
 import com.mirea.kapsamunelenanikolaevna.celebritybase.domain.repo.CelebrityRepository;
 import com.mirea.kapsamunelenanikolaevna.celebritybase.domain.usecase.AddCelebrityToFavoriteUseCase;
 import com.mirea.kapsamunelenanikolaevna.celebritybase.domain.usecase.GetFavoriteCelebritiesUseCase;
-import com.mirea.kapsamunelenanikolaevna.celebritybase.presantation.mock.CelebrityDataSource;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class MainViewModel extends ViewModel {
@@ -27,11 +27,19 @@ public class MainViewModel extends ViewModel {
     private final CelebrityDao celebrityDao;
     private final NetworkApi networkApi;
 
-    // 1. LiveData для обновления статуса Use Cases
     private final MutableLiveData<String> celebrityResultLiveData = new MutableLiveData<>();
+    private final MutableLiveData<List<Celebrity>> celebritiesLiveData = new MutableLiveData<>();
 
-    // 2. MediatorLiveData для контрольного задания (объединяет БД и Network)
-    private final MediatorLiveData<String> mediatorCelebrityData = new MediatorLiveData<>();
+    // Постоянные источники LiveData
+    private final MutableLiveData<List<Celebrity>> dbSource = new MutableLiveData<>();
+    private final MutableLiveData<List<Celebrity>> netSource = new MutableLiveData<>();
+
+    //  Списки для хранения последних данных
+    private final List<Celebrity> currentDbList = new ArrayList<>();
+    private final List<Celebrity> currentNetList = new ArrayList<>();
+
+    // Единый MediatorLiveData
+    private final MediatorLiveData<List<Celebrity>> mediatorCelebrityData = new MediatorLiveData<>();
 
     public MainViewModel(CelebrityRepository celebrityRepository, CelebrityDao celebrityDao, NetworkApi networkApi) {
         this.celebrityRepository = celebrityRepository;
@@ -39,19 +47,43 @@ public class MainViewModel extends ViewModel {
         this.networkApi = networkApi;
         Log.d(MainViewModel.class.getSimpleName(), "MainViewModel created");
 
-        // Запускаем сборку данных в MediatorLiveData
+        // Подключаем источники
+        setupMediatorSources();
+
+        // Загрузка при создании
         loadCombinedData();
+    }
+
+    private void setupMediatorSources() {
+        mediatorCelebrityData.addSource(dbSource, data -> {
+            currentDbList.clear();
+            if (data != null) {
+                currentDbList.addAll(data);
+            }
+            emitMergedCelebrities();
+        });
+
+        mediatorCelebrityData.addSource(netSource, data -> {
+            currentNetList.clear();
+            if (data != null) {
+                currentNetList.addAll(data);
+            }
+            emitMergedCelebrities();
+        });
     }
 
     public LiveData<String> getCelebrityResult() {
         return celebrityResultLiveData;
     }
 
-    public LiveData<String> getMediatorCelebrityData() {
+    public LiveData<List<Celebrity>> getMediatorCelebrityData() {
         return mediatorCelebrityData;
     }
 
-    // Сохранение через UseCase (с 4 аргументами вашей доменной модели)
+    public LiveData<List<Celebrity>> getCelebritiesLiveData() {
+        return celebritiesLiveData;
+    }
+
     public void saveCelebrity(String name) {
         if (name == null || name.trim().isEmpty()) {
             celebrityResultLiveData.setValue("Имя не может быть пустым!");
@@ -61,7 +93,7 @@ public class MainViewModel extends ViewModel {
         Celebrity celebrity = new Celebrity(
                 (int) (System.currentTimeMillis() % 100000),
                 name,
-                "https://example.com/photo.png",
+                "",
                 "Известная личность"
         );
 
@@ -71,7 +103,6 @@ public class MainViewModel extends ViewModel {
         }).start();
     }
 
-    // Загрузка через UseCase (список List<Celebrity>)
     public void loadCelebrity() {
         new Thread(() -> {
             List<Celebrity> list = new GetFavoriteCelebritiesUseCase(celebrityRepository).execute();
@@ -81,48 +112,70 @@ public class MainViewModel extends ViewModel {
                     builder.append("• ").append(c.getName()).append("\n");
                 }
                 celebrityResultLiveData.postValue(builder.toString().trim());
+                celebritiesLiveData.postValue(list);
             } else {
                 celebrityResultLiveData.postValue("Список сохраненных пуст!");
+                celebritiesLiveData.postValue(new ArrayList<>());
             }
         }).start();
     }
 
-    // Реализация требования №3: MediatorLiveData объединяет Room (БД) и MockNetworkApi (Сеть)
+    // Метод поставляет новые данные в dbSource и netSource
     public void loadCombinedData() {
-        // Источник 1: Замоканная БД Room
-        MutableLiveData<String> dbSource = new MutableLiveData<>();
         new Handler(Looper.getMainLooper()).postDelayed(() -> {
             new Thread(() -> {
                 List<CelebrityEntity> localList = celebrityDao.getAll();
-                if (localList != null && !localList.isEmpty()) {
-                    dbSource.postValue("Кеш БД: " + localList.get(0).name);
-                } else {
-                    dbSource.postValue("Кеш БД: записей нет");
+                List<Celebrity> convertedList = new ArrayList<>();
+                if (localList != null) {
+                    for (CelebrityEntity entity : localList) {
+                        convertedList.add(new Celebrity(
+                                entity.id,
+                                entity.name,
+                                entity.photoUrl,
+                                entity.biography
+                        ));
+                    }
                 }
+                dbSource.postValue(convertedList);
             }).start();
         }, 300);
 
-        // Источник 2: Замоканная Сеть (NetworkApi)
-        MutableLiveData<String> netSource = new MutableLiveData<>();
         new Handler(Looper.getMainLooper()).postDelayed(() -> {
             new Thread(() -> {
                 List<CelebrityDto> remoteList = networkApi.getCelebrities();
-                if (remoteList != null && !remoteList.isEmpty()) {
-                    netSource.postValue("Сеть (Mock API): " + remoteList.get(0).name);
-                } else {
-                    netSource.postValue("Сеть: ответ пуст");
+                List<Celebrity> convertedList = new ArrayList<>();
+                if (remoteList != null) {
+                    for (CelebrityDto dto : remoteList) {
+                        convertedList.add(new Celebrity(
+                                dto.id,
+                                dto.name,
+                                dto.photoUrl,
+                                dto.biography
+                        ));
+                    }
                 }
+                netSource.postValue(convertedList);
             }).start();
         }, 1200);
+    }
 
-        // Подключаем источники к MediatorLiveData
-        mediatorCelebrityData.addSource(dbSource, data -> {
-            mediatorCelebrityData.setValue("Получено из источника -> " + data);
-        });
+    private void emitMergedCelebrities() {
+        List<Celebrity> combined = new ArrayList<>(currentDbList);
 
-        mediatorCelebrityData.addSource(netSource, data -> {
-            mediatorCelebrityData.setValue("Получено из источника -> " + data);
-        });
+        for (Celebrity remoteItem : currentNetList) {
+            boolean exists = false;
+            for (Celebrity localItem : currentDbList) {
+                if (localItem.getName().equalsIgnoreCase(remoteItem.getName())) {
+                    exists = true;
+                    break;
+                }
+            }
+            if (!exists) {
+                combined.add(remoteItem);
+            }
+        }
+
+        mediatorCelebrityData.setValue(combined);
     }
 
     @Override
