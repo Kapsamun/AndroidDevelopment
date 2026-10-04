@@ -15,7 +15,6 @@ import androidx.core.view.WindowInsetsCompat;
 
 public class MainActivity extends AppCompatActivity {
 
-    // Список книг: автор — название (более 30)
     private final String[] books = {
             "Лев Толстой — Война и мир",
             "Фёдор Достоевский — Преступление и наказание",
@@ -61,13 +60,13 @@ public class MainActivity extends AppCompatActivity {
 
         ListView listView = findViewById(R.id.books_list_view);
 
-        // Используем стандартную разметку с двумя TextView
         ArrayAdapter<String> adapter = new ArrayAdapter<>(
                 this,
                 android.R.layout.simple_list_item_2,
                 android.R.id.text1,
                 books
         ) {
+            /// создает и заполняет каждый элемент
             @Override
             public View getView(int position, View convertView, ViewGroup parent) {
                 View view = super.getView(position, convertView, parent);
@@ -89,3 +88,7 @@ public class MainActivity extends AppCompatActivity {
         listView.setAdapter(adapter);
     }
 }
+///Предназначен
+/// для отображения небольших списков с одинаковыми элементами. Каждый элемент
+/// списка представляет собой отдельный элемент интерфейса, который может быть
+/// любым UI-компонентом (например, текст, изображение, кнопки).

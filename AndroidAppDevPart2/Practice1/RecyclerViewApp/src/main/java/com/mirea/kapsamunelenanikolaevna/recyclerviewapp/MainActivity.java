@@ -10,6 +10,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 import java.util.List;
 
+///RecyclerView переиспользует элементы (view recycling).
+///Когда элемент уходит за экран, его ViewHolder отдаётся новому элементу.
 public class MainActivity extends AppCompatActivity {
 
     @Override

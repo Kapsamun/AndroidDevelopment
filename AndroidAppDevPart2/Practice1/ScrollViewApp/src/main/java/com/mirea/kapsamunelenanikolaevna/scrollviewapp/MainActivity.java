@@ -18,7 +18,6 @@ public class MainActivity extends AppCompatActivity {
         LinearLayout wrapper = findViewById(R.id.wrapper);
 
         // Геометрическая прогрессия: a_n = 1 * 2^(n-1)
-        // 1, 2, 4, 8, 16, ... до 100-го элемента
         long value = 1; // первый член
 
         for (int i = 1; i <= 100; i++) {
@@ -34,3 +33,6 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 }
+
+///подходит, когда нужно прокручивать небольшое кол-во элементов
+///(мало элементов, элементы разные по высоте, не нужна высокая производительность)

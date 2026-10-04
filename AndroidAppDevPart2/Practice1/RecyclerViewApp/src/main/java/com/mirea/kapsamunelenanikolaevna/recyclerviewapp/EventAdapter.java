@@ -34,7 +34,6 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.EventViewHol
         holder.title.setText(event.getTitle());
         holder.description.setText(event.getDescription());
 
-        // Пункт 1.3 — загрузка картинки по имени drawable
         String pkgName = holder.itemView.getContext().getPackageName();
         int resId = holder.itemView.getContext()
                 .getResources()
@@ -52,6 +51,8 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.EventViewHol
         return events.size();
     }
 
+
+    /// ViewHolder — это «коробка», которая хранит ссылки на View внутри одного элемента списка.
     static class EventViewHolder extends RecyclerView.ViewHolder {
         ImageView image;
         TextView title;
