@@ -23,6 +23,9 @@
         <activity
             android:name=".presantation.MainActivity"
             android:exported="false" />
+        <activity
+            android:name=".presantation.CelebrityDetailActivity"
+            android:exported="false" />
     </application>
 
 </manifest>

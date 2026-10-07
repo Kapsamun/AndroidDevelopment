@@ -45,6 +45,7 @@ dependencies {
     implementation("com.google.firebase:firebase-auth")
 
     implementation("androidx.room:room-runtime:2.6.1")
+    implementation("com.squareup.picasso:picasso:2.8")
 
     implementation(libs.appcompat)
     implementation(libs.material)

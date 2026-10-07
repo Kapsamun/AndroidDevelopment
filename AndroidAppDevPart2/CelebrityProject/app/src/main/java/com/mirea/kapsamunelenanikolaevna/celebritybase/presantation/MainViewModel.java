@@ -52,6 +52,7 @@ public class MainViewModel extends ViewModel {
 
         // Загрузка при создании
         loadCombinedData();
+        loadCelebrity();
     }
 
     private void setupMediatorSources() {
@@ -84,6 +85,12 @@ public class MainViewModel extends ViewModel {
         return celebritiesLiveData;
     }
 
+    private final MutableLiveData<String> errorLiveData = new MutableLiveData<>();
+
+    public LiveData<String> getError() {
+        return errorLiveData;
+    }
+
     public void saveCelebrity(String name) {
         if (name == null || name.trim().isEmpty()) {
             celebrityResultLiveData.setValue("Имя не может быть пустым!");
@@ -103,22 +110,23 @@ public class MainViewModel extends ViewModel {
         }).start();
     }
 
-    public void loadCelebrity() {
-        new Thread(() -> {
-            List<Celebrity> list = new GetFavoriteCelebritiesUseCase(celebrityRepository).execute();
-            if (list != null && !list.isEmpty()) {
-                StringBuilder builder = new StringBuilder("Сохраненные знаменитости:\n");
-                for (Celebrity c : list) {
-                    builder.append("• ").append(c.getName()).append("\n");
+    public void loadCelebrity(){
+            new Thread(() -> {
+                try {
+                    List<Celebrity> list = celebrityRepository.getCelebrities();
+                    if (list == null || list.isEmpty()) {
+                        errorLiveData.postValue("Список пуст или сервер не ответил");
+                        celebritiesLiveData.postValue(new java.util.ArrayList<>());
+                    } else {
+                        errorLiveData.postValue(null); // ошибок нет
+                        celebritiesLiveData.postValue(list);
+                    }
+                } catch (Exception e) {
+                    errorLiveData.postValue("Ошибка сети: " + e.getMessage());
+                    celebritiesLiveData.postValue(new java.util.ArrayList<>());
                 }
-                celebrityResultLiveData.postValue(builder.toString().trim());
-                celebritiesLiveData.postValue(list);
-            } else {
-                celebrityResultLiveData.postValue("Список сохраненных пуст!");
-                celebritiesLiveData.postValue(new ArrayList<>());
-            }
-        }).start();
-    }
+            }).start();
+        }
 
     // Метод поставляет новые данные в dbSource и netSource
     public void loadCombinedData() {
