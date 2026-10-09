@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/surface"
+    android:padding="24dp"
+    android:gravity="center_horizontal">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Профиль"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        android:textColor="@color/on_surface"
+        android:gravity="center"
+        android:paddingBottom="24dp" />
+
+    <View
+        android:layout_width="96dp"
+        android:layout_height="96dp"
+        android:background="@color/purple_100" />
+
+    <TextView
+        android:id="@+id/textViewProfileEmail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:gravity="center"
+        android:textSize="16sp"
+        android:textColor="@color/on_surface"
+        android:text="email@example.com" />
+
+    <TextView
+        android:id="@+id/textViewProfileUid"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:gravity="center"
+        android:textSize="13sp"
+        android:textColor="#666666"
+        android:text="UID" />
+
+    <TextView
+        android:id="@+id/textViewProfileStatus"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:gravity="center"
+        android:textSize="14sp"
+        android:text="Авторизован"
+        android:textColor="@color/purple_700" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/buttonLogout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:text="Выйти"
+        app:backgroundTint="@color/purple_500" />
+</LinearLayout>

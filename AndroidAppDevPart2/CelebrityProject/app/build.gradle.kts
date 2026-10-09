@@ -47,6 +47,13 @@ dependencies {
     implementation("androidx.room:room-runtime:2.6.1")
     implementation("com.squareup.picasso:picasso:2.8")
 
+    implementation("androidx.fragment:fragment:1.8.5")
+    implementation("com.google.android.material:material:1.12.0")
+    implementation("androidx.recyclerview:recyclerview:1.3.2")
+    implementation("androidx.cardview:cardview:1.0.0")
+    implementation("androidx.lifecycle:lifecycle-viewmodel:2.8.7")
+    implementation("androidx.lifecycle:lifecycle-livedata:2.8.7")
+
     implementation(libs.appcompat)
     implementation(libs.material)
     implementation(libs.activity)
