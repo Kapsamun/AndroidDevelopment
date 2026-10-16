@@ -38,18 +38,18 @@
 
         <Button
             android:id="@+id/buttonPickImage"
-            android:layout_width="match_parent"
+            android:layout_width="354dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:text="Выбрать фото" />
 
         <Button
             android:id="@+id/buttonRecognize"
-            android:layout_width="match_parent"
+            android:layout_width="379dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:text="Распознать"
-            android:enabled="false" />
+            android:enabled="false"
+            android:text="Распознать" />
 
         <TextView
             android:id="@+id/textResult"

@@ -5,8 +5,8 @@ import android.content.Context;
 
 
 import com.mirea.kapsamunelenanikolaevna.celebritybase.data.repository.network.MockNetworkApi;
-import com.mirea.kapsamunelenanikolaevna.celebritybase.data.repository.network.NetworkApi;
 import com.mirea.kapsamunelenanikolaevna.celebritybase.data.repository.network.TmdbNetworkApi;
+import com.mirea.kapsamunelenanikolaevna.celebritybase.data.repository.network.NetworkApi;
 import com.mirea.kapsamunelenanikolaevna.celebritybase.data.repository.network.models.CelebrityDto;
 import com.mirea.kapsamunelenanikolaevna.celebritybase.data.repository.storage.ClientStorage;
 import com.mirea.kapsamunelenanikolaevna.celebritybase.data.repository.storage.room.AppDatabase;

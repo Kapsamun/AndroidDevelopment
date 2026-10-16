@@ -25,6 +25,7 @@ public class RecognizeFragment extends Fragment {
     private FragmentRecognizeBinding binding;
     private Bitmap selectedBitmap;
     private CelebrityClassifier classifier;
+    private String modelError;
 
     private final ActivityResultLauncher<String> pickImage =
             registerForActivityResult(new ActivityResultContracts.GetContent(), uri -> {
@@ -45,24 +46,53 @@ public class RecognizeFragment extends Fragment {
 
         try {
             classifier = new CelebrityClassifier(requireContext());
+            modelError = null;
         } catch (Exception e) {
-            binding.textResult.setText("Ошибка загрузки модели: " + e.getMessage()
-                    + "\nПроверьте, что в assets лежат mobilenet_v1_1.0_224_quant.tflite и labels.txt");
+            classifier = null;
+            modelError = e.getMessage();
+            binding.textResult.setText(
+                    "Ошибка загрузки модели: " + modelError
+                            + "\nПроверьте assets: mobilenet_v1_1.0_224_quant.tflite и labels.txt");
         }
 
-        binding.buttonPickImage.setOnClickListener(v ->
-                pickImage.launch("image/*"));
+        binding.buttonPickImage.setOnClickListener(v -> pickImage.launch("image/*"));
 
         binding.buttonRecognize.setOnClickListener(v -> {
-            if (selectedBitmap == null || classifier == null) {
-                Toast.makeText(requireContext(), "Сначала выберите фото", Toast.LENGTH_SHORT).show();
+            // Раздельные сообщения — чтобы было понятно, в чём дело
+            if (classifier == null) {
+                Toast.makeText(requireContext(),
+                        "Модель не загружена: " + (modelError != null ? modelError : "нет файлов в assets"),
+                        Toast.LENGTH_LONG).show();
                 return;
             }
+            if (selectedBitmap == null) {
+                Toast.makeText(requireContext(),
+                        "Сначала выберите фото",
+                        Toast.LENGTH_SHORT).show();
+                return;
+            }
+
             binding.textResult.setText("Распознавание...");
+            binding.buttonRecognize.setEnabled(false);
+
+            final Bitmap bmp = selectedBitmap;
             new Thread(() -> {
-                String result = classifier.classify(selectedBitmap);
-                requireActivity().runOnUiThread(() ->
-                        binding.textResult.setText(result));
+                try {
+                    String result = classifier.classify(bmp);
+                    if (isAdded()) {
+                        requireActivity().runOnUiThread(() -> {
+                            binding.textResult.setText(result);
+                            binding.buttonRecognize.setEnabled(true);
+                        });
+                    }
+                } catch (Exception e) {
+                    if (isAdded()) {
+                        requireActivity().runOnUiThread(() -> {
+                            binding.textResult.setText("Ошибка распознавания: " + e.getMessage());
+                            binding.buttonRecognize.setEnabled(true);
+                        });
+                    }
+                }
             }).start();
         });
     }
@@ -72,11 +102,18 @@ public class RecognizeFragment extends Fragment {
             InputStream is = requireContext().getContentResolver().openInputStream(uri);
             selectedBitmap = BitmapFactory.decodeStream(is);
             if (is != null) is.close();
+
+            if (selectedBitmap == null) {
+                Toast.makeText(requireContext(), "Не удалось декодировать изображение", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
             binding.imagePreview.setImageBitmap(selectedBitmap);
             binding.buttonRecognize.setEnabled(true);
             binding.textResult.setText("Фото загружено. Нажмите «Распознать»");
         } catch (Exception e) {
-            Toast.makeText(requireContext(), "Не удалось открыть фото", Toast.LENGTH_SHORT).show();
+            selectedBitmap = null;
+            Toast.makeText(requireContext(), "Не удалось открыть фото: " + e.getMessage(), Toast.LENGTH_SHORT).show();
         }
     }
 
