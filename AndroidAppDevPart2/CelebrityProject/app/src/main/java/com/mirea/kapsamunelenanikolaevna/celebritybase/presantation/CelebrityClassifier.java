@@ -7,6 +7,8 @@ import android.graphics.BitmapFactory;
 
 //import org.tensorflow.lite.Interpreter;
 
+import org.tensorflow.lite.Interpreter;
+
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.IOException;

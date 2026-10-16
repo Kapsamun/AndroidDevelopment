@@ -6,6 +6,7 @@ import android.content.Context;
 
 import com.mirea.kapsamunelenanikolaevna.celebritybase.data.repository.network.MockNetworkApi;
 import com.mirea.kapsamunelenanikolaevna.celebritybase.data.repository.network.NetworkApi;
+import com.mirea.kapsamunelenanikolaevna.celebritybase.data.repository.network.TmdbNetworkApi;
 import com.mirea.kapsamunelenanikolaevna.celebritybase.data.repository.network.models.CelebrityDto;
 import com.mirea.kapsamunelenanikolaevna.celebritybase.data.repository.storage.ClientStorage;
 import com.mirea.kapsamunelenanikolaevna.celebritybase.data.repository.storage.room.AppDatabase;
@@ -24,7 +25,8 @@ public class CelebrityRepoImpl implements CelebrityRepository {
     private final CelebrityDao celebrityDao;
 
     public CelebrityRepoImpl(Context context) {
-        this.networkApi = new MockNetworkApi();
+        //this.networkApi = new MockNetworkApi();
+        this.networkApi = new TmdbNetworkApi();
         this.celebrityDao = AppDatabase.getInstance(context).celebrityDao();
     }
 
