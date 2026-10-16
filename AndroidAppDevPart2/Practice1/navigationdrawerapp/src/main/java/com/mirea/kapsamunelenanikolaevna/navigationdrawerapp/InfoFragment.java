@@ -8,6 +8,8 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import com.mirea.kapsamunelenanikolaevna.navigationdrawerapp.databinding.FragmentInfoBinding;
+
 
 public class InfoFragment extends Fragment {
 

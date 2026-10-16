@@ -4,14 +4,7 @@ plugins {
 
 android {
     namespace = "com.mirea.kapsamunelenanikolaevna.bottomnavigationapp"
-    compileSdk {
-        version = release(36) {
-            minorApiLevel = 1
-        }
-        buildFeatures {
-            viewBinding = true
-        }
-    }
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "com.mirea.kapsamunelenanikolaevna.bottomnavigationapp"
@@ -19,7 +12,6 @@ android {
         targetSdk = 36
         versionCode = 1
         versionName = "1.0"
-
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -32,9 +24,14 @@ android {
             )
         }
     }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
+    }
+
+    buildFeatures {
+        viewBinding = true
     }
 }
 
@@ -47,9 +44,6 @@ dependencies {
     val nav_version = "2.8.4"
     implementation("androidx.navigation:navigation-fragment:$nav_version")
     implementation("androidx.navigation:navigation-ui:$nav_version")
-    implementation("com.google.android.material:material:1.12.0")
-    implementation("androidx.appcompat:appcompat:1.7.0")
-    implementation("androidx.constraintlayout:constraintlayout:2.1.4")
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
