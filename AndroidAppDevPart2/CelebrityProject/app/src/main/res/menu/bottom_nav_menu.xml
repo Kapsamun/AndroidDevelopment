@@ -1,11 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:id="@+id/nav_list"
+        android:id="@+id/celebrityListFragment"
         android:icon="@android:drawable/ic_menu_sort_by_size"
         android:title="Список" />
     <item
-        android:id="@+id/nav_profile"
-        android:icon="@android:drawable/ic_menu_myplaces"
-        android:title="Профиль" />
+        android:id="@+id/favoritesFragment"
+        android:icon="@android:drawable/btn_star_big_on"
+        android:title="Избранное" />
+    <item
+        android:id="@+id/recognizeFragment"
+        android:icon="@android:drawable/ic_menu_camera"
+        android:title="Распознавание" />
 </menu>
