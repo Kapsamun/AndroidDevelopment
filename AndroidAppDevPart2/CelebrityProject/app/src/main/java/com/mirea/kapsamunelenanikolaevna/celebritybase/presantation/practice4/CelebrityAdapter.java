@@ -3,6 +3,7 @@ package com.mirea.kapsamunelenanikolaevna.celebritybase.presantation.practice4;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -14,23 +15,40 @@ import com.mirea.kapsamunelenanikolaevna.celebritybase.domain.models.Celebrity;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class CelebrityAdapter extends RecyclerView.Adapter<CelebrityAdapter.CelebrityViewHolder> {
 
     private List<Celebrity> items = new ArrayList<>();
+    private Set<Integer> favoriteIds = new HashSet<>();
     private OnItemClickListener listener;
+    private OnFavoriteClickListener favoriteListener;
 
     public interface OnItemClickListener {
         void onItemClick(Celebrity celebrity);
+    }
+
+    public interface OnFavoriteClickListener {
+        void onFavoriteClick(Celebrity celebrity, boolean isFavorite);
     }
 
     public void setOnItemClickListener(OnItemClickListener listener) {
         this.listener = listener;
     }
 
+    public void setOnFavoriteClickListener(OnFavoriteClickListener listener) {
+        this.favoriteListener = listener;
+    }
+
     public void setItems(List<Celebrity> newItems) {
         this.items = newItems != null ? newItems : new ArrayList<>();
+        notifyDataSetChanged();
+    }
+
+    public void setFavoriteIds(Set<Integer> ids) {
+        this.favoriteIds = ids != null ? ids : new HashSet<>();
         notifyDataSetChanged();
     }
 
@@ -53,21 +71,22 @@ public class CelebrityAdapter extends RecyclerView.Adapter<CelebrityAdapter.Cele
     }
 
     class CelebrityViewHolder extends RecyclerView.ViewHolder {
-
         private final ImageView imageViewPhoto;
         private final TextView textViewName;
         private final TextView textViewBio;
+        private final ImageButton buttonFavorite;
 
         public CelebrityViewHolder(@NonNull View itemView) {
             super(itemView);
             imageViewPhoto = itemView.findViewById(R.id.imageViewPhoto);
             textViewName = itemView.findViewById(R.id.textViewName);
             textViewBio = itemView.findViewById(R.id.textViewBio);
+            buttonFavorite = itemView.findViewById(R.id.buttonFavorite);
         }
 
         public void bind(Celebrity celebrity) {
             textViewName.setText(celebrity.getName());
-            textViewBio.setText(celebrity.getBiography());
+            textViewBio.setText(celebrity.getBiography() != null ? celebrity.getBiography() : "");
 
             String url = celebrity.getPhotoUrl();
             if (url == null || url.isEmpty()) {
@@ -82,9 +101,18 @@ public class CelebrityAdapter extends RecyclerView.Adapter<CelebrityAdapter.Cele
                         .into(imageViewPhoto);
             }
 
+            boolean isFav = favoriteIds.contains(celebrity.getId());
+            buttonFavorite.setImageResource(isFav
+                    ? android.R.drawable.btn_star_big_on
+                    : android.R.drawable.btn_star_big_off);
+
             itemView.setOnClickListener(v -> {
-                if (listener != null) {
-                    listener.onItemClick(celebrity);
+                if (listener != null) listener.onItemClick(celebrity);
+            });
+
+            buttonFavorite.setOnClickListener(v -> {
+                if (favoriteListener != null) {
+                    favoriteListener.onFavoriteClick(celebrity, isFav);
                 }
             });
         }

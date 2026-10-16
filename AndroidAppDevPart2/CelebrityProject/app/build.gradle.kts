@@ -63,6 +63,11 @@ dependencies {
     implementation("androidx.navigation:navigation-fragment:$nav_version")
     implementation("androidx.navigation:navigation-ui:$nav_version")
 
+    // TensorFlow Lite
+    // TensorFlow Lite — с исключением конфликтующих -api артефактов
+    implementation("org.tensorflow:tensorflow-lite:2.14.0")
+    implementation("org.tensorflow:tensorflow-lite-support:0.4.4")
+
     implementation(libs.appcompat)
     implementation(libs.material)
     implementation(libs.activity)

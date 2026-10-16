@@ -5,7 +5,6 @@
     android:id="@+id/nav_graph"
     app:startDestination="@id/celebrityListFragment">
 
-    <!-- Список знаменитостей -->
     <fragment
         android:id="@+id/celebrityListFragment"
         android:name="com.mirea.kapsamunelenanikolaevna.celebritybase.presantation.CelebrityListFragment"
@@ -16,40 +15,36 @@
             app:destination="@id/celebrityDetailsFragment" />
     </fragment>
 
-    <!-- Детали знаменитости -->
     <fragment
         android:id="@+id/celebrityDetailsFragment"
         android:name="com.mirea.kapsamunelenanikolaevna.celebritybase.presantation.CelebrityDetailsFragment"
         android:label="Детали"
         tools:layout="@layout/fragment_celebrity_details">
-
-        <argument
-            android:name="celebrityId"
-            app:argType="integer" />
-
-        <argument
-            android:name="celebrityName"
-            app:argType="string" />
-        <argument
-            android:name="celebrityPhoto"
-            app:argType="string" />
-        <argument
-            android:name="celebrityBio"
-            app:argType="string" />
+        <argument android:name="celebrityId" app:argType="integer" />
+        <argument android:name="celebrityName" app:argType="string" />
+        <argument android:name="celebrityPhoto" app:argType="string" />
+        <argument android:name="celebrityBio" app:argType="string" />
     </fragment>
 
-    <!-- Избранное -->
     <fragment
         android:id="@+id/favoritesFragment"
         android:name="com.mirea.kapsamunelenanikolaevna.celebritybase.presantation.FavoritesFragment"
         android:label="Избранное"
-        tools:layout="@layout/fragment_favorites" />
+        tools:layout="@layout/fragment_favorites">
+        <action
+            android:id="@+id/action_favorites_to_details"
+            app:destination="@id/celebrityDetailsFragment" />
+    </fragment>
 
-    <!-- Распознавание -->
     <fragment
         android:id="@+id/recognizeFragment"
         android:name="com.mirea.kapsamunelenanikolaevna.celebritybase.presantation.RecognizeFragment"
         android:label="Распознавание"
         tools:layout="@layout/fragment_recognize" />
 
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="com.mirea.kapsamunelenanikolaevna.celebritybase.presantation.ProfileFragment"
+        android:label="Профиль"
+        tools:layout="@layout/fragment_profile" />
 </navigation>

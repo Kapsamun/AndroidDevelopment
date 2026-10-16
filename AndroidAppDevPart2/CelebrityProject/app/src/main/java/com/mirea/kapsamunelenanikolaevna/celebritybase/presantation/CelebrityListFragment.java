@@ -17,11 +17,15 @@ import com.mirea.kapsamunelenanikolaevna.celebritybase.R;
 import com.mirea.kapsamunelenanikolaevna.celebritybase.databinding.FragmentCelebrityListBinding;
 import com.mirea.kapsamunelenanikolaevna.celebritybase.presantation.practice4.CelebrityAdapter;
 
+import java.util.HashSet;
+import java.util.Set;
+
 public class CelebrityListFragment extends Fragment {
 
     private FragmentCelebrityListBinding binding;
     private MainViewModel viewModel;
     private CelebrityAdapter adapter;
+    private final Set<Integer> favoriteIds = new HashSet<>();
 
     @Nullable
     @Override
@@ -42,25 +46,34 @@ public class CelebrityListFragment extends Fragment {
         binding.recyclerViewCelebrities.setLayoutManager(new LinearLayoutManager(requireContext()));
         binding.recyclerViewCelebrities.setAdapter(adapter);
 
-        // Переход на детали
+        // Клик по элементу → детали
         adapter.setOnItemClickListener(celebrity -> {
             Bundle args = new Bundle();
-            args.putInt("celebrityId", celebrity.getId());                    // было putString
+            args.putInt("celebrityId", celebrity.getId());
             args.putString("celebrityName", celebrity.getName());
-            args.putString("celebrityPhoto", celebrity.getPhotoUrl());
-            args.putString("celebrityBio", celebrity.getBiography());
+            args.putString("celebrityPhoto", celebrity.getPhotoUrl() != null ? celebrity.getPhotoUrl() : "");
+            args.putString("celebrityBio", celebrity.getBiography() != null ? celebrity.getBiography() : "");
             Navigation.findNavController(view).navigate(R.id.action_list_to_details, args);
         });
 
-        // LiveData
-        viewModel.getCelebritiesLiveData().observe(getViewLifecycleOwner(), list -> {
-            if (list != null) adapter.setItems(list);
+        // Клик по сердечку → добавить/убрать из избранного
+        adapter.setOnFavoriteClickListener((celebrity, isCurrentlyFavorite) -> {
+            if (isCurrentlyFavorite) {
+                viewModel.removeFromFavorites(celebrity);
+                favoriteIds.remove(celebrity.getId());
+                Toast.makeText(requireContext(), "Удалено из избранного", Toast.LENGTH_SHORT).show();
+            } else {
+                viewModel.addToFavorites(celebrity);
+                favoriteIds.add(celebrity.getId());
+                Toast.makeText(requireContext(), "Добавлено в избранное", Toast.LENGTH_SHORT).show();
+            }
+            adapter.setFavoriteIds(favoriteIds);
         });
 
+        // Объединённые данные (сеть + БД) — контрольное задание предыдущей практики
         viewModel.getMediatorCelebrityData().observe(getViewLifecycleOwner(), list -> {
-            if (list != null && !list.isEmpty()) {
+            if (list != null) {
                 adapter.setItems(list);
-                Toast.makeText(requireContext(), "Объединено: " + list.size(), Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -70,18 +83,28 @@ public class CelebrityListFragment extends Fragment {
             }
         });
 
-        binding.buttonSaveCelebrity.setOnClickListener(v -> {
-            String name = binding.editTextCelebrity.getText().toString().trim();
-            if (!name.isEmpty()) {
-                viewModel.saveCelebrity(name);
-                binding.editTextCelebrity.setText("");
-            } else {
-                Toast.makeText(requireContext(), "Введите имя", Toast.LENGTH_SHORT).show();
+        viewModel.getCelebrityResult().observe(getViewLifecycleOwner(), msg -> {
+            if (msg != null && !msg.isEmpty()) {
+                Toast.makeText(requireContext(), msg, Toast.LENGTH_SHORT).show();
             }
         });
 
-        binding.buttonGetCelebrity.setOnClickListener(v -> viewModel.loadCelebrity());
+        // Загружаем избранное, чтобы подсветить сердечки
+        viewModel.getFavoritesLiveData().observe(getViewLifecycleOwner(), favorites -> {
+            favoriteIds.clear();
+            if (favorites != null) {
+                for (var c : favorites) {
+                    favoriteIds.add(c.getId());
+                }
+            }
+            adapter.setFavoriteIds(favoriteIds);
+        });
+        viewModel.loadFavorites();
+
         binding.buttonFetchCombined.setOnClickListener(v -> viewModel.loadCombinedData());
+
+        // Первая загрузка
+        viewModel.loadCombinedData();
     }
 
     @Override

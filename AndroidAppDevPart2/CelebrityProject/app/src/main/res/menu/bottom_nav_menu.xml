@@ -12,4 +12,8 @@
         android:id="@+id/recognizeFragment"
         android:icon="@android:drawable/ic_menu_camera"
         android:title="Распознавание" />
+    <item
+        android:id="@+id/profileFragment"
+        android:icon="@android:drawable/ic_menu_myplaces"
+        android:title="Профиль" />
 </menu>

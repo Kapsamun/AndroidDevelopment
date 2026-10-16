@@ -3,38 +3,18 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="16dp">
+    android:padding="12dp">
 
     <Button
-        android:id="@+id/buttonGetCelebrity"
+        android:id="@+id/buttonFetchCombined"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Отобразить сохранённых" />
+        android:text="Объединить данные (Сеть + БД)" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewCelebrities"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:layout_marginTop="12dp" />
-
-    <EditText
-        android:id="@+id/editTextCelebrity"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Имя знаменитости" />
-
-    <Button
-        android:id="@+id/buttonSaveCelebrity"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:text="Сохранить в БД" />
-
-    <Button
-        android:id="@+id/buttonFetchCombined"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:text="Объединить данные (Сеть + БД)" />
+        android:layout_marginTop="8dp" />
 </LinearLayout>

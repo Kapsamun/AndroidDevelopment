@@ -17,6 +17,7 @@ import com.mirea.kapsamunelenanikolaevna.celebritybase.domain.models.Celebrity;
 import com.mirea.kapsamunelenanikolaevna.celebritybase.domain.repo.CelebrityRepository;
 import com.mirea.kapsamunelenanikolaevna.celebritybase.domain.usecase.AddCelebrityToFavoriteUseCase;
 import com.mirea.kapsamunelenanikolaevna.celebritybase.domain.usecase.GetFavoriteCelebritiesUseCase;
+import com.mirea.kapsamunelenanikolaevna.celebritybase.domain.usecase.RemoveCelebrityFromFavoriteUseCase;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -184,6 +185,50 @@ public class MainViewModel extends ViewModel {
         }
 
         mediatorCelebrityData.setValue(combined);
+    }
+
+    // === ИЗБРАННОЕ ===
+    // === ИЗБРАННОЕ ===
+    private final MutableLiveData<List<Celebrity>> favoritesLiveData = new MutableLiveData<>();
+
+    public LiveData<List<Celebrity>> getFavoritesLiveData() {
+        return favoritesLiveData;
+    }
+
+    public void loadFavorites() {
+        new Thread(() -> {
+            try {
+                List<Celebrity> favorites =
+                        new GetFavoriteCelebritiesUseCase(celebrityRepository).execute();
+                favoritesLiveData.postValue(
+                        favorites != null ? favorites : new ArrayList<>());
+            } catch (Exception e) {
+                favoritesLiveData.postValue(new ArrayList<>());
+            }
+        }).start();
+    }
+
+    public void addToFavorites(Celebrity celebrity) {
+        new Thread(() -> {
+            boolean ok = new AddCelebrityToFavoriteUseCase(celebrityRepository)
+                    .execute(celebrity);
+            loadFavorites(); // сразу обновляем список
+            celebrityResultLiveData.postValue(
+                    ok ? "Добавлено в избранное: " + celebrity.getName()
+                            : "Ошибка добавления");
+        }).start();
+    }
+
+    public void removeFromFavorites(Celebrity celebrity) {
+        new Thread(() -> {
+            // Важно: вызываем UseCase удаления!
+            boolean ok = new RemoveCelebrityFromFavoriteUseCase(celebrityRepository)
+                    .execute(celebrity.getId());
+            loadFavorites(); // обновляем LiveData → UI перерисуется
+            celebrityResultLiveData.postValue(
+                    ok ? "Удалено из избранного: " + celebrity.getName()
+                            : "Ошибка удаления");
+        }).start();
     }
 
     @Override

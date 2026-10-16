@@ -24,7 +24,6 @@ public class MainActivity extends AppCompatActivity {
                 .findFragmentById(R.id.nav_host_fragment);
         NavController navController = navHostFragment.getNavController();
 
-        // Связываем BottomNavigation с NavController
         NavigationUI.setupWithNavController(binding.bottomNav, navController);
     }
 }
