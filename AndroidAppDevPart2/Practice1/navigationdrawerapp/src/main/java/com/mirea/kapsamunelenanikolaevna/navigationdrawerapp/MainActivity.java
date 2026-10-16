@@ -30,7 +30,6 @@ public class MainActivity extends AppCompatActivity {
                 .setOpenableLayout(binding.drawerLayout)
                 .build();
 
-        // Надёжный способ получения NavController
         NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.nav_host);
         NavController navController = navHostFragment.getNavController();
@@ -38,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(binding.navView, navController);
 
-        // Закрытие шторки по кнопке Back (требование задания)
+        // Закрытие шторки по кнопке Back
         getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
             @Override
             public void handleOnBackPressed() {
@@ -52,6 +51,8 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+
+    //Метод срабатывает, когда пользователь нажимает на иконку в левом верхнем углу шапки
     @Override
     public boolean onSupportNavigateUp() {
         NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager()

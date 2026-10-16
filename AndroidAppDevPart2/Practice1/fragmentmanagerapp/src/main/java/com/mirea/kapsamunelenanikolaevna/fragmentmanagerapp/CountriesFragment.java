@@ -36,6 +36,8 @@ public class CountriesFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        //передаем requireActivity(), чтобы оба фрагмента получили ОДИН И ТОТ ЖЕ экземпляр ViewModel,
+        // привязанный к главному экрану
         ShareViewModel viewModel =
                 new ViewModelProvider(requireActivity()).get(ShareViewModel.class);
 

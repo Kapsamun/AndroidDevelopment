@@ -12,7 +12,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // Слушатель в Activity (как в PDF)
+ //Настраиваем слушатель результатов на уровне главного FragmentManager'а экрана
         getSupportFragmentManager().setFragmentResultListener(
                 "requestKey",
                 this,

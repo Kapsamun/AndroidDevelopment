@@ -24,7 +24,7 @@ public class BlankFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        // Получение номера из Bundle (задание PDF)
+        // Получение номера из Bundle
         if (getArguments() != null) {
             int numberStudent = requireArguments().getInt("my_number_student", -1);
             Log.d(BlankFragment.class.getSimpleName(), "Номер по списку: " + numberStudent);

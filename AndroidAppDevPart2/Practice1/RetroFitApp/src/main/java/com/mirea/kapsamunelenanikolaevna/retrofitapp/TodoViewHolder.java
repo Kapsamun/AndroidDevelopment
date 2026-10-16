@@ -1,4 +1,4 @@
-package com.mirea.kapsamunelenanikolaevna.retrofitapp; // ← свой package
+package com.mirea.kapsamunelenanikolaevna.retrofitapp;
 
 import android.view.View;
 import android.widget.CheckBox;

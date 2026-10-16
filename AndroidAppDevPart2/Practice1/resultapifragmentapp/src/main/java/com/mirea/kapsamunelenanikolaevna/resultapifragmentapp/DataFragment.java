@@ -26,7 +26,7 @@ public class DataFragment extends Fragment {
             Bundle bundle = new Bundle();
             bundle.putString("key", text);
 
-            // Результат через child FragmentManager (как в PDF)
+            // Кладем посылку во внутренний (дочерний) почтовый ящик этого фрагмента
             getChildFragmentManager().setFragmentResult("requestKey", bundle);
 
             BottomSheetFragment bottomSheet = new BottomSheetFragment();

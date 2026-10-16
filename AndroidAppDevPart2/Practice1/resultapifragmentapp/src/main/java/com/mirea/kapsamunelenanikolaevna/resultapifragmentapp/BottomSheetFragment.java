@@ -18,7 +18,6 @@ public class BottomSheetFragment extends BottomSheetDialogFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // Слушатель результата (как в PDF)
         getParentFragmentManager().setFragmentResultListener(
                 "requestKey",
                 this,

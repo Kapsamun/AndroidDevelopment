@@ -34,11 +34,6 @@ public class TodoAdapter extends RecyclerView.Adapter<TodoViewHolder> {
         this.apiService = apiService;
     }
 
-    public void setTodos(List<ToDo> todos) {
-        this.todos = todos;
-        notifyDataSetChanged();
-    }
-
     @NonNull
     @Override
     public TodoViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {

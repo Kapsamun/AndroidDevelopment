@@ -9,9 +9,9 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
 import com.mirea.kapsamunelenanikolaevna.celebritybase.R;
 import com.mirea.kapsamunelenanikolaevna.celebritybase.domain.models.Celebrity;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -70,7 +70,7 @@ public class CelebrityAdapter extends RecyclerView.Adapter<CelebrityAdapter.Cele
             textViewBio.setText(celebrity.getBiography());
 
             // Загрузка фото через Glide по URL из Retrofit/заглушки
-            Glide.with(itemView.getContext())
+            Picasso.get()
                     .load(celebrity.getPhotoUrl())
                     .placeholder(R.drawable.ic_launcher_foreground)
                     .error(R.drawable.ic_launcher_foreground)

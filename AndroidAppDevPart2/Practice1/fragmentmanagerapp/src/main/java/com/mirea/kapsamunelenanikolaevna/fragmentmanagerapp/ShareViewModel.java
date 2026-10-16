@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel;
 public class ShareViewModel extends ViewModel {
     private final MutableLiveData<String> selectedItem = new MutableLiveData<>();
 
+    // Метод, первого фрагмент (CountriesFragment)
     public void setSomeValue(String item) {
         selectedItem.setValue(item);
     }
